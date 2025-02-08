@@ -2,7 +2,6 @@ import { apiError } from "../utils/apiError.js";
 import { User } from "../models/user.models.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import bcrypt from "bcryptjs"
-import mongoose from "mongoose";
 
 const registerUser = async (req, res) => {
     console.log("Registering");
@@ -64,6 +63,8 @@ const loginUser = async (req, res) => {
             const loggedInUser = await user.save({validateBeforeSave:false})
             return res
             .status(200)
+            .cookie("accessToken", accessToken, options)
+            .cookie("refreshToken", refreshToken, options)
             .json(
                 new apiResponse(200, loggedInUser, "Logged in successcully")
             )

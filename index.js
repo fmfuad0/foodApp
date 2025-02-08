@@ -1,10 +1,16 @@
-import cookieParser from "cookie-parser";
-import cors from "cors";
-import express from "express";
-import connectDB from "./database/connectDatabase.js";
-import dotenv from "dotenv";
-import { apiError } from "./utils/apiError.js";  // Assuming you export `ApiError` here
-import { authRouter } from "./routes/auth.routes.js";
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+import { apiError } from './utils/apiError.js';
+import connectDB from './database/connectDatabase.js';
+import { authRouter } from './routes/auth.routes.js';
+import { userRouter } from './routes/user.routes.js';
+import { resturentRouter } from './routes/resturent.routes.js';
+import { catagoryRouter } from './routes/catagory.routes.js';
+import { foodRouter } from './routes/food.routes.js';
+import { cartRouter } from './routes/cart.routes.js';
+import { orderRouter } from './routes/order.routes.js';
 
 const app = express();
 
@@ -15,7 +21,8 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
-const port = process.env.PORT || 3000; // Corrected to process.env.PORT
+
+const port = process.env.port || 3000; // Corrected to process.env.PORT
 try {
     await connectDB()
         .then(() => {
@@ -32,28 +39,12 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRouter);
-
-
-
-
-
-
-
-// Global error handler
-app.use((err, req, res, next) => {
-    if (err instanceof apiError) {
-        return res.status(err.statusCode).json({
-            success: false,
-            message: err.message,
-            errors: err.errors,
-        });
-    }
-    // Handle other errors
-    return res.status(500).json({
-        success: false,
-        message: "Something went wrong",
-    });
-});
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/resturents", resturentRouter);
+app.use("/api/v1/catagories", catagoryRouter);
+app.use("/api/v1/foods", foodRouter);
+app.use("/api/v1/cart", cartRouter);
+app.use("/api/v1/order", orderRouter);
 
 
 export { app };
