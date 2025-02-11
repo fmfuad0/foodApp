@@ -33,7 +33,7 @@ const orderSchema = new Schema({
     // },
     status:{
         type:String,
-        enum:["preparing", "prepared", "On the way", "Delivered"],
+        enum:["preparing", "prepared", "On the way", "waiting to be recieved", "Delivered", "Canceled"],
         default:"preparing"
     }
 })

@@ -4,6 +4,17 @@ import {asyncHandler} from "../utils/asyncHandler.js"
 import { apiResponse } from "../utils/apiResponse.js";
 import { apiError } from "../utils/apiError.js";
 import { Cart } from "../models/cart.models.js";
+import { Driver } from "../models/driver.models.js";
+import { error } from "console";
+
+
+const getOrder = asyncHandler(async (req, res)=>{
+    const {orderId} = req.params
+    const order = await Order.findById(new mongoose.Types.ObjectId(orderId))
+    if(!order)
+        return res.status(404).json(new apiResponse(404, {}, "Order not found"))
+    return res.status(200).json(new apiResponse(200, order, "Order fetched successfuly"))
+})
 
 const placeOrder = asyncHandler(async(req, res)=>{
     try {
@@ -13,15 +24,18 @@ const placeOrder = asyncHandler(async(req, res)=>{
             return res.status(404).json(new apiError(404, {}, "Add items to cart first"))
         console.log("Cart id: ", cart.totalAmount);
 
-        // const availableDriver = await Driver.findOne({isAvailable:true})
+        const availableDriver = await Driver.findOne({isAvailable:true})
+        if(!availableDriver)
+            return res.status(404).json(new apiError(404, {}, "No available driver found", error))
 
         const totalPrice = cart.totalAmount+100
         const createdOrder = new Order({
             cart: new mongoose.Types.ObjectId(cart._id),
             orderedBy: req.user._id,
             totalOrderPrice: totalPrice,
-            driver: req.user._id,
+            driver: availableDriver._id,
         })
+        // toggleDriverAvailability(req, res, availableDriver._id)
         createdOrder.save({validateBeforeSave:false})
         console.log(createdOrder);
         cart.activeStatus = false
@@ -34,12 +48,14 @@ const placeOrder = asyncHandler(async(req, res)=>{
 
 const toggleOrderStatus = asyncHandler(async(req, res)=>{
     try {
-        const {orderId} = req.params
-        let {status} = req.params
+        const {orderId, status} = req.params
         console.log(orderId, status);
         
         const order = await Order.findByIdAndUpdate(new mongoose.Types.ObjectId(orderId), {
-            $set: {"status": status.replace("-the-", " the ")}
+            $set: {"status": status
+                .replace("on-the-way", "on the way")
+                .replace("waiting-to-be-recieved", "waiting to be recieved")
+            }
         }, {new:true})
         if(!order)
             return res.status(404).json(new apiError(404, {}, "Order not found"))
@@ -54,11 +70,14 @@ const toggleOrderStatus = asyncHandler(async(req, res)=>{
 const getUserOrders = asyncHandler(async(req, res)=>{
     try {
         const orders = await Order.find({
-            orderedBy:req.user._id
+            "orderedBy":req.user._id
         })
-        return res.status(200).json(200, orders, "User orders fetched")
+        console.log(orders);
+        if(!orders)
+            return res.status(404).json(new apiResponse(404, {}, "No Orders found"))
+        return res.status(200).json(new apiResponse(200, orders, "User orders fetched"))
     } catch (error) {
-        
+        return res.status(500).json(new apiResponse(500, {}, "Could not fetch user orders: "+error.message))
     }
 
 })
@@ -66,15 +85,44 @@ const getUserOrders = asyncHandler(async(req, res)=>{
 const cancelOrder = asyncHandler(async(req, res)=>{
     try {
         const {orderId} =  req.params
-        await Order.findById(new mongoose.Types.ObjectId(orderId))
-        return res.status(200).json(new apiResponse(200, {}, "Order has been canceled"))
+        const order =await Order.findById(new mongoose.Types.ObjectId(orderId))
+        if(!order || order.status==="Canceled")
+            return res.status(404).json(new apiResponse(404, {}, "Order not found or Order has already been canceled"))
+        order.status = "Canceled"
+        await order.save()
+        return res.status(200).json(new apiResponse(200, order, "Order has been canceled"))
     } catch (error) {
-        return res.status(500).json(new apiResponse(500, {}, "Could not cancel order"))
+        return res.status(500).json(new apiResponse(500, {}, "Could not cancel order"+error.message))
+    }
+})
+
+const deliverOrder = asyncHandler(async(req, res)=>{
+    try {
+        const {orderId} =  req.params
+        const order =await Order.findById(new mongoose.Types.ObjectId(orderId))
+        console.log(orderId, order);
+        
+        if(!order || order.status!=="waiting to be recieved")
+            return res.status(404).json(new apiResponse(404, {}, "Order not found or Order has already been delevered"))
+
+        const driver = await Driver.findById(new mongoose.Types.ObjectId(order.driver))
+        console.log(driver.isAvailable);
+        driver.isAvailable= (true ^ driver.isAvailable);
+        console.log(driver.isAvailable);
+        await driver.save()
+        order.status = "Delivered"
+        await order.save()
+        return res.status(200).json(new apiResponse(200, order, "Order has been Delivered"))
+    } catch (error) {
+        return res.status(500).json(new apiResponse(500, {}, "Could not cancel order"+error.message))
     }
 })
 
 export{
     placeOrder,
     toggleOrderStatus,
-    cancelOrder
+    getUserOrders,
+    cancelOrder,
+    getOrder,
+    deliverOrder
 }
