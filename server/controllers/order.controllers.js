@@ -79,10 +79,17 @@ const toggleOrderStatus = asyncHandler(async(req, res)=>{
 })
 
 const getUserOrders = asyncHandler(async(req, res)=>{
+    const {orderStatus} = req.params
+    console.log("status : ", orderStatus);
+    
     try {
         const orders = await Order.find({
-            "orderedBy":req.user._id
-        })
+            $and :[{"orderedBy":req.user._id}, {"status" : orderStatus}]
+        }
+        )
+        // const orders = await Order.find({
+        //         "orderedBy":req.user._id,
+        // })
         console.log(orders);
         if(!orders)
             return res.status(404).json(new apiResponse(404, {}, "No Orders found"))

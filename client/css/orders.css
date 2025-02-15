@@ -25,11 +25,13 @@ h1 {
 
 /* Table */
 #ordersTable {
+    display: inline-block;
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
     font-size: small;
-
+    max-height: 280px;
+    overflow: scroll;
 }
 
 #ordersTable th, #ordersTable td {
@@ -60,7 +62,8 @@ h1 {
     text-decoration: none;
     border-radius: 5px;
     margin-top: 20px;
-    display: block;
+    
+    display: inline-block;
     text-align: center;
 }
 

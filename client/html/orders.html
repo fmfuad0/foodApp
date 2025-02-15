@@ -8,14 +8,27 @@
 </head>
 <body>
     <h1>Orders</h1>
+    <label for="orderSelector">Choose order type:</label>
+    <select name="orderSelector" id="orderSelector">
+        <option value="preparing">Preparing</option>
+        <option value="prepared">Prepared</option>
+        <option value="on the way">On the way</option>
+        <option value="waiting to be recieved">Waiting to be recieved</option>
+        <option value="Canceled">Canceled</option>
+        <option value="Delivered">Delivered</option>
+    </select> 
+    <button id="getOrders">GET ORDERS</button>
     <table id="ordersTable">
+        <thead id="orderHeading">
         <tr>
             <th>Order ID</th>
             <th>Date</th>
             <th>Quantity</th>
             <th>Price</th>
             <th>Status</th>
+            <th>Actions</th>
         </tr>
+    </thead>
     </table>
     <a id="backBtn" href="../html/index.html">Back To index</a>
     <script src="../scripts/orders.js"></script>

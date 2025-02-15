@@ -1,4 +1,6 @@
-window.onload = async () => {
+window.onload = loadOrders 
+
+async function loadOrders () {
     console.log("Loading orders");
 
         const res = await fetch('http://localhost:3000/api/v1/auth/login', {
@@ -14,9 +16,11 @@ window.onload = async () => {
 
         const user = (await res.json()).data;
         console.log(user);
+        const statusFilter = document.getElementById("orderSelector").value
+        console.log("Filter : ", statusFilter);
         
         
-        const response = await fetch('http://localhost:3000/api/v1/order/user-orders', {
+        const response = await fetch(`http://localhost:3000/api/v1/order/user-orders/c/${statusFilter}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -27,6 +31,21 @@ window.onload = async () => {
         
         const data = (await response.json());
         const orders = data.data;
+        document.getElementById('ordersTable').innerHTML=`<tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Actions</th> 
+        </tr>`
+        if(orders.length === 0){
+            const el = document.createElement('h1')
+            el.innerHTML = "NO ORDERS FOUND"
+            document.getElementById('ordersTable').appendChild(el)
+            return ;
+        }
+
         orders.forEach(order => {
             console.log();
             
@@ -41,5 +60,10 @@ window.onload = async () => {
         
         document.getElementById('ordersTable').appendChild(orderElem)
         });
-
 }
+
+document.getElementById('getOrders').addEventListener('click', async (e)=>{
+    e.preventDefault();
+    console.log("selected");
+    loadOrders();
+})
