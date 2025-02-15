@@ -55,7 +55,15 @@ async function loadOrders () {
             <td>${(new Date(order.createdAt).toLocaleDateString()+ "\n" + new Date(order.createdAt).toLocaleTimeString())}</td>
             <td>1</td>
             <td>${order.totalOrderPrice}</td>
-            <td>${order.status}</td>`
+            <td>${order.status}</td>
+            <td><select name="orderActionSelector" id="orderActionSelector" style= "display:block; margin-bottom:10px">
+            <option value="" selected>Chose Order action </option>
+            <option value="view" style="background-color:gray; color:white">View Order</option>
+            <option value="cancel" style="background-color:red; color:black">Cancel Order</option>
+            <option value="deliver" style="background-color:green; color:black;">Mark as delivered</option>
+    </select>
+    <a href="demo.html">Take action</a></td>
+            `
         console.log(orderElem);
         
         document.getElementById('ordersTable').appendChild(orderElem)
