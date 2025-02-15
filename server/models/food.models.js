@@ -9,6 +9,10 @@ const foodSchema = new Schema({
         type:String,
         required:[true, "Description is required"]
     },
+    img:{
+        type:String,
+        default:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0EbtAMkvjstpwiT8oSwwiPDJXVpC_KAaHdw&s"
+    },
     price:{
         type:Number,
         required: true

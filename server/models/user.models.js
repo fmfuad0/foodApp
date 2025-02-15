@@ -65,7 +65,7 @@ userSchema.methods.generateAccessToken = function () {
             expiresIn: process.env.accessTokenExpiry
         }
     );
-    console.log("Access token created :"+token);
+    // console.log("Access token created :"+token);
     return token
 }
 
@@ -79,7 +79,7 @@ userSchema.methods.generateRefreshToken = function () {
             expiresIn: process.env.refreshTokenExpiry
         }
     )
-    console.log("Refresh token created :"+token);
+    // console.log("Refresh token created :"+token);
     return token
 }
 

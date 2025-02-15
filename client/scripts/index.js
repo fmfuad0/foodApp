@@ -45,10 +45,12 @@ async function displayFoodList() {
             foodList.innerHTML = '';
             data.data.forEach((food) => {
                 const foodEl = document.createElement('div');
-                foodEl.innerHTML = `<h3>${food.title}</h3>
-                                    <p>${food.description}</p>
-                                    <p>Price: ${food.price}</p>
-                                    <button onclick="addToCart('${food._id}')">Add to Cart</button>`;
+                foodEl.innerHTML = `
+                <img src="${food.img}">
+                <h3>${food.title}</h3>
+                <p>${food.description}</p>
+                <p>Price: ${food.price}</p>
+                <button onclick="addToCart('${food._id}')">Add to Cart</button>`;
                 foodList.appendChild(foodEl);
             });
         } else {
@@ -167,7 +169,6 @@ async function displayCart(req, res) {
 
 }
 
-
 getFoodBtn.addEventListener('click', async (event) => {
     // console.log("User : ", user)
     event.preventDefault();
@@ -228,6 +229,7 @@ logoutBtn.addEventListener('click', () => {
 // Handle placing an order
 placeOrderBtn.addEventListener('click', async () => {
     try {
+        document.getElementsByTagName('')
         const response = await fetch('http://localhost:3000/api/v1/order/place/', {
             method: 'GET',
             headers: {
@@ -242,13 +244,16 @@ placeOrderBtn.addEventListener('click', async () => {
         if (response.ok) {
             // console.log("order data : ", data.data);
             console.log("Order placed successfully");
-
+            document.getElementById('notifyMessage').innerHTML=`Order Placed`;
+            
         } else {
             console.log('Order placement failed');
+            document.getElementById('notifyMessage').innerHTML=`Could not place order.<br>At items to cart first`;
             console.log(data.errors);
         }
         displayCart();
-        window.location.href = "http://127.0.0.1:3000/client/html/orders.html";
+        document.getElementById('notify').style.display = 'block'
+        ;
     } catch (error) {
         console.log('Error placing order:', error);
     }

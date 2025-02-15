@@ -61,7 +61,7 @@ const loginUser = async (req, res) => {
             user.refreshToken = refreshToken
             user.accessToken = accessToken
             const loggedInUser = await user.save({validateBeforeSave:false})
-            console.log(loggedInUser);
+            // console.log(loggedInUser);
             
             return res
             .status(200)

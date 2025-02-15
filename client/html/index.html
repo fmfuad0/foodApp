@@ -40,6 +40,12 @@
             <button id="placeOrderBtn" ><a target="_blank" href="../html/orders.html">Place Order</a></button>
         </div>
         <button id="logoutBtn">Logout</button>
+
+        <div id="notify">
+          <h1 id="notifyMessage">message</h1>
+          <button id="close" onclick="document.getElementById('notify').style.display = `none`;">Close</button>
+          <button id="viewOrder" onclick="window.location.href = `http://127.0.0.1:3000/client/html/orders.html`;">View Orders</button>
+      </div>
     </div>
 
     <script src="../scripts/index.js"></script>

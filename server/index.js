@@ -11,7 +11,7 @@ import { catagoryRouter } from './routes/catagory.routes.js';
 import { foodRouter } from './routes/food.routes.js';
 import { cartRouter } from './routes/cart.routes.js';
 import { orderRouter } from './routes/order.routes.js';
-import { access } from 'fs';
+import { driverRouter } from './routes/driver.routes.js';
 
 const app = express();
 dotenv.config();
@@ -64,5 +64,6 @@ app.use("/api/v1/catagories", catagoryRouter);
 app.use("/api/v1/foods", foodRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/driver", driverRouter);
 
 export { app };
