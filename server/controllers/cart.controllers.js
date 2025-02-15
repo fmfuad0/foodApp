@@ -4,18 +4,32 @@ import { Food } from "../models/food.models.js";
 import { apiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { apiResponse } from "../utils/apiResponse.js";
-import { response } from "express";
+import { User } from "../models/user.models.js";
 
 
 const addFoodToCart = asyncHandler(async (req, res) => {
+    
+    console.log("Adding food to cart");
+    
     const { foodId, qty } = req.params
     if (!foodId)
         return res.status(400).json(new apiError(400, {}, "Food id not found"))
     try {
         const food = await Food.findById(new mongoose.Types.ObjectId(foodId))
+        
         if (!food)
             return res.status(404).json(new apiError(404, {}, "Food not found"))
-        let activeCart = await Cart.findOne({ $and: [{ orderedBy: req.user._id }, { activeStatus: true }, {resturent:food.resturent}] })
+        if(!req.user)
+        {
+            const findUser = await User.find({accessToken: req.headers.authorization.replace("Bearer ", "")}).select("-password -accessToken -__v")
+            
+            if(findUser[0])
+                req.user = findUser[0]
+            else
+                return res.status(404).json(new apiError(404, {}, "User not found"))
+        }
+        
+        let activeCart = await Cart.findOne({ $and: [{ orderedBy: req.user._id }, { activeStatus: true } ]})
 
         console.log("Found cart: ", activeCart);
 
@@ -47,6 +61,7 @@ const addFoodToCart = asyncHandler(async (req, res) => {
             let cartItem = new Object()
             cartItem.foodItem = food._id,
             cartItem.qty = qty
+            cartItem.price = food.price
             await Cart.findByIdAndUpdate(activeCart._id,
                 { $push: { "foods": cartItem } },
                 { new: true }
@@ -79,37 +94,29 @@ const removeFoodFromCart = asyncHandler(async (req, res) => {
         if (!activeCart)
             return res.status(404).json(new apiError(404, {}, "Cart not found"))
         let tmp = false
-        let dlt = false
+
         for (let index = 0; index < activeCart.foods.length; index++) {
-            if (activeCart.foods[index].foodItem.equals(food._id) && activeCart.foods[index].qty > 0) {
+            if (activeCart.foods[index].foodItem.equals(food._id)) {
                 console.log("Food found");
-                if (activeCart.foods[index].qty === 1) {
-                    activeCart = await Cart.findByIdAndUpdate(activeCart._id,
-                        { $pull: { "foods": { foodItem: food._id, qty: 1 } } },
-                        {new:true}
-                    );
-                    return res.status(200).json(new apiResponse(200, activeCart, "Food successfully removed from cart"))
+                activeCart = await Cart.findByIdAndUpdate(activeCart._id,
+                    { $inc: { "totalAmount": -(food.price * qty) }},
+                    {new:true}
+                );
+                console.log("1", activeCart);
+                
+                activeCart = await Cart.findByIdAndUpdate(activeCart._id,
+                    { $pull: { "foods": { foodItem: food._id} } },
+                    {new:true}
+                );
+                if(activeCart.foods.length === 0){
+                    activeCart = await Cart.findByIdAndDelete(activeCart._id)
+                    return res.status(200).json(new apiResponse(200, {}, "Cart is empty"))
                 }
-                else
-                    tmp = true
-                break;
+                console.log("2", activeCart);
+                return res.status(200).json(new apiResponse(200, activeCart, "Food successfully removed from cart"))
             }
         }
-        if (tmp) {
-            if (tmp)
-                await Cart.findByIdAndUpdate(activeCart._id,
-                    { $inc: { "foods.$[elem].qty": -1 * qty } },
-                    {
-                        new: true,
-                        arrayFilters: [{ "elem.foodItem": food._id }]
-                    }
-                );
-            activeCart = await Cart.findByIdAndUpdate(activeCart._id,
-                { $inc: { "totalAmount": (-1 * food.price * qty) } },
-                { new: true }
-            )
-            return res.status(200).json(new apiResponse(200, activeCart, "Food removed from cart"))
-        }
+
         return res.status(200).json(new apiError(404, {}, "Food not found in cart"))
         // console.log(activeCart);
     } catch (error) {
@@ -127,7 +134,6 @@ const getCart = asyncHandler(async(req, res)=>{
         return res.status(500).json(new apiError(500, {}, "Could not fetch cart"))
     }
 })
-
 
 
 export {

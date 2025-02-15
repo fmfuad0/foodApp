@@ -10,7 +10,8 @@ import { error } from "console";
 
 const getOrder = asyncHandler(async (req, res)=>{
     const {orderId} = req.params
-    const order = await Order.findById(new mongoose.Types.ObjectId(orderId))
+    const order = await Order.findById(new mongoose.Types.ObjectId(orderId));
+    
     if(!order)
         return res.status(404).json(new apiResponse(404, {}, "Order not found"))
     return res.status(200).json(new apiResponse(200, order, "Order fetched successfuly"))
@@ -18,15 +19,25 @@ const getOrder = asyncHandler(async (req, res)=>{
 
 const placeOrder = asyncHandler(async(req, res)=>{
     try {
-        const {resturentId} = req.params
-        const cart = await Cart.findOne({$and:[{orderedBy:req.user._id}, {activeStatus:true}, {resturent: resturentId}]})
+        const cart = await Cart.findOne({$and:[{orderedBy:req.user._id}, {activeStatus:true}]})
         if(!cart)
             return res.status(404).json(new apiError(404, {}, "Add items to cart first"))
-        console.log("Cart id: ", cart.totalAmount);
+        console.log("Cart amount: ", cart.totalAmount);
 
-        const availableDriver = await Driver.findOne({isAvailable:true})
+        let availableDriver = await Driver.findOne({isAvailable:true})
         if(!availableDriver)
-            return res.status(404).json(new apiError(404, {}, "No available driver found", error))
+        {
+            // return res.status(404).json(new apiError(404, {}, "No available driver found", error))
+            console.log("No available driver found", error);
+
+            availableDriver = await Driver.create({
+                name: "Driver",
+                email: "temp@mail.com",
+                phone: "0000000000",
+            })
+            
+
+        }
 
         const totalPrice = cart.totalAmount+100
         const createdOrder = new Order({

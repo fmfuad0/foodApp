@@ -20,9 +20,12 @@ const createFood =asyncHandler(async (req, res)=>{
 })
 
 const getAllFoods = asyncHandler(async(req, res)=>{
+    // const {resturentId} = req.params
     const foods = await Food.find({})
+    
     if(!foods)
         return res.status(404).json(new apiError(404, foods, "No food found"))
+    console.log(foods);
     return res.status(200).json(new apiResponse(200, foods, "Foods fetched successfully"))
 })
 

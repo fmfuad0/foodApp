@@ -13,7 +13,7 @@ const driverSchema = new Schema({
     phone:{
         type:String,
         required:true,
-        unique:true
+        // unique:true
     },
     isAvailable:{
         type:Boolean,

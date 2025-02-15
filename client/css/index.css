@@ -1,0 +1,226 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1b3b39;
+    color: #cfc0c0;
+}
+
+h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#app {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgb(30, 38, 59);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Login Section */
+#loginSection {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#loginSection input {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+#loginSection button {
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#loginSection button:hover {
+    background-color: #45a049;
+}
+
+#loginError {
+    text-align: center;
+    font-size: 14px;
+    color: red;
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Food List Section */
+#foodListSection {
+    /* display: none; */
+    margin-top: 30px;
+}
+
+#foodList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#foodList li {
+    padding: 15px;
+    background-color: #fff;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+#foodList li h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+#foodList li p {
+    margin: 5px 0;
+    color: #666;
+}
+
+#foodList li button {
+    padding: 8px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#foodList li button:hover {
+    background-color: #45a049;
+}
+
+/* Cart Section */
+#cartSection {
+    position: fixed;
+    max-width: 700px;
+    height: 300px;
+    top: 70px;
+    right: 100px;
+    /* margin: 30 100; */
+    display: none;
+}
+
+#cartList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#cartList li {
+    padding: 15px;
+    background-color: #fff;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+#cartList li h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+#cartList li p {
+    margin: 5px 0;
+    color: #666;
+}
+
+#cartList li button {
+    padding: 8px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#cartList li button:hover {
+    background-color: #e53935;
+}
+
+#totalPrice {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Buttons */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Logout Button */
+#logoutBtn {
+    display: none;
+    margin-top: 30px;
+    padding: 12px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+
+#logoutBtn:hover {
+    background-color: #e53935;
+}
+
+/* Form Layout */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+form input {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+form button {
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #45a049;
+}

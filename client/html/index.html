@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Order App</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Login Section -->
+        <div id="loginSection">
+            <h2>Login</h2>
+            <input type="text" id="username" placeholder="Username" value="fmfuad" required>
+            <input type="password" id="password" placeholder="Password" value="password" required>
+            <button id="loginBtn">Login</button>
+            <div id="loginError" class="hidden">Invalid username or password</div>
+        </div>
+
+        <!-- Food List Section -->
+        <div id="foodListSection">
+          <h2>Food List</h2>
+          <form action="">
+              <text>Resturent ID: </text>
+              <input type="text" value="67a490025661b78dd9061362" required id="resturentId">
+              <button id="getFoodBtn">Get Foods</button>
+            </form>
+            <ul id="foodList" hidden="true">
+          
+            </ul>
+        </div>
+
+        <!-- Cart Section -->
+        <div id="cartSection" >
+            <h2>Your Cart</h2>
+            <ul id="cartList">
+              
+            </ul>
+            <div><b>Total Price: <span id="totalPrice">0</span></b></div>
+            <button id="placeOrderBtn" ><a target="_blank" href="../html/orders.html">Place Order</a></button>
+        </div>
+        <button id="logoutBtn">Logout</button>
+    </div>
+
+    <script src="../scripts/index.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+</head>
+
+<body>
+
+  <h1>Login</h1>
+  <form id="loginForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" value="fmfuad" required><br><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" value="password"><br><br>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <p id="message"></p>
+
+  
+
+  <script src="../scripts/index.js"></script>
+
+</body>
+
+</html> -->

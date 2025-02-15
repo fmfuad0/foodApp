@@ -1,0 +1,69 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-weight: bold;
+}
+
+
+/* Body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 20px;
+    margin: 0;
+}
+
+/* Header */
+h1 {
+    text-align: center;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+/* Table */
+#ordersTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: small;
+
+}
+
+#ordersTable th, #ordersTable td {
+    padding: 12px 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+#ordersTable th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#ordersTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#ordersTable tr:hover {
+    background-color: #ddd;
+}
+
+/* Back Button */
+#backBtn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    display: block;
+    text-align: center;
+}
+
+#backBtn:hover {
+    background-color: #45a049;
+}

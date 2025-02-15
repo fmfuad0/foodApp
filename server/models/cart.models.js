@@ -10,6 +10,10 @@ const cartSchema = new Schema({
                 qty: {
                     type:Number,
                     default:0
+                },
+                price:{
+                    type:Number,
+                    default:0
                 }
             }
         ],
@@ -26,10 +30,6 @@ const cartSchema = new Schema({
         type:Boolean,
         default:true
     },
-    resturent:{
-        type:Schema.Types.ObjectId,
-        ref:"Resturent"
-    }
 }, {timestamps:true})
 
 const Cart = mongoose.model("Cart", cartSchema)

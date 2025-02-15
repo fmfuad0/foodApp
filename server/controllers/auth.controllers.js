@@ -42,7 +42,7 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     const {username, password} = req.body
     if(!username || !password)
-        throw new apiError(400, "Username and password are required")
+        return new apiError(400, "Username and password are required")
 
     const options = {
         httpOnly: true,
@@ -61,6 +61,8 @@ const loginUser = async (req, res) => {
             user.refreshToken = refreshToken
             user.accessToken = accessToken
             const loggedInUser = await user.save({validateBeforeSave:false})
+            console.log(loggedInUser);
+            
             return res
             .status(200)
             .cookie("accessToken", accessToken, options)

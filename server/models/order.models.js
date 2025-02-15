@@ -36,7 +36,7 @@ const orderSchema = new Schema({
         enum:["preparing", "prepared", "On the way", "waiting to be recieved", "Delivered", "Canceled"],
         default:"preparing"
     }
-})
+}, {timestamps: true})
 
 
 export const Order = mongoose.model("Order", orderSchema)
