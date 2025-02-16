@@ -31,8 +31,21 @@ async function loadOrders() {
         await login();
     const statusFilter = document.getElementById("orderSelector").value
     console.log("Filter : ", statusFilter);
-
-    const response = await fetch(`http://localhost:3000/api/v1/order/available-orders`, {
+    let url;
+    switch(statusFilter){
+        case "acceptedOrder":{
+            document.getElementById('title').innerText = "PENDING ORDERS"
+            url = `http://localhost:3000/api/v1/driver/accepted-orders/c/67a8d585f8a0ba68f4252d82`
+            break;
+        }
+        case "preparing":{
+            document.getElementById('title').innerText = "AVAILABLE ORDERS"
+            url = `http://localhost:3000/api/v1/order/available-orders`
+            break;
+        }
+        
+    }
+    const response = await fetch(url, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

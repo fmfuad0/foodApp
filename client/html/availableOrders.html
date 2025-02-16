@@ -7,15 +7,11 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>AVAILABLE ORDERS</h1>
+    <h1 id="title">AVAILABLE ORDERS</h1>
     <label for="orderSelector">Choose order status:</label>
         <select name="orderSelector" id="orderSelector">
-        <option value="preparing">Preparing</option>
-        <option value="prepared">Prepared</option>
-        <option value="on the way">On the way</option>
-        <option value="waiting to be recieved">Waiting to be recieved</option>
-        <option value="canceled">Canceled</option>
-        <option value="delivered">Delivered</option>
+        <option value="preparing" selected>Preparing</option>
+        <option value="acceptedOrder">Orders to be delivered</option>
     </select> 
     <button id="getOrders">GET ORDERS</button>
     <table id="ordersTable">

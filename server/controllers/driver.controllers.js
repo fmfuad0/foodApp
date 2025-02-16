@@ -35,6 +35,27 @@ const assignDriver = asyncHandler(async (req, res) => {
     }
 })
 
+const getAssignedOrders = asyncHandler(async(req, res)=>{
+    try {
+        console.log("Getting assigned orders.");
+        
+        const {driverId} = req.params
+        const driver =await Driver.findById(new mongoose.Types.ObjectId(driverId))
+        if(!driver)
+            throw new apiError(404, "Driver not found", {})
+        const orders = await Order.find({
+            $and:[{driver: driver._id}, {$nor:[{status: "delivered"}, {status:"Delivered"}, {status:"canceled"}, {status:"Canceled"}]}]
+        })
+        if(orders===undefined)
+            throw new apiError(500, "Could not fetch assigned orders", {})
+        return res.status(200).json(new apiResponse(200, orders, "Assigned orders fetched successfully."))
+    } catch (error) {
+        console.log("Error while fetching assigned orders : ", error.message);
+        return res.status(500).json(new apiError(500, "Error assinging : "+error.message, error))
+    }
+});
+
 export {
-    assignDriver
+    assignDriver,
+    getAssignedOrders
 }

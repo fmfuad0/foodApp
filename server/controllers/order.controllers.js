@@ -87,11 +87,15 @@ const getUserOrders = asyncHandler(async(req, res)=>{
 const getAvailableOrders = asyncHandler(async(req, res)=>{
     
     try {
+        console.log("Getting available orders");
+        
         const orders = await Order.find({
             $and:[{"driver" : {$exists: false} }, {$or :[{"status": "prepared"}, {"status" : "preparing"}]} ]
             
         }
         )
+        console.log("Done");
+        
         if(!orders)
             return res.status(404).json(new apiResponse(404, {}, "No Orders found"))
         return res.status(200).json(new apiResponse(200, orders, "User orders fetched"))
@@ -100,7 +104,6 @@ const getAvailableOrders = asyncHandler(async(req, res)=>{
     }
 
 })
-
 
 const cancelOrder = asyncHandler(async(req, res)=>{
     try {
